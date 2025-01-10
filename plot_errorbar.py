@@ -40,9 +40,6 @@ def _plot_errorbar(u, y, n_sample_lower, n_sample_upper, n_steps, twinx, figure_
 
     x = np.linspace(n_sample_lower, n_sample_upper, n_steps, endpoint=True)
     fig, ax1 = plt.subplots()
-    ax1.errorbar(
-        x, r2_fastcan.mean(axis=0), yerr=r2_fastcan.std(axis=0) / 3, label="FastCan"
-    )
     if twinx:
         ax2 = ax1.twinx()
         ax2.errorbar(
@@ -55,8 +52,11 @@ def _plot_errorbar(u, y, n_sample_lower, n_sample_upper, n_steps, twinx, figure_
         ax2.set_ylabel("R2")
     else:
         ax1.errorbar(
-            x, r2_random.mean(axis=0), yerr=r2_random.std(axis=0) / 3, label="Random"
+            x, r2_random.mean(axis=0), yerr=r2_random.std(axis=0) / 3, color="tab:orange", label="Random"
         )
+    ax1.errorbar(
+    x, r2_fastcan.mean(axis=0), yerr=r2_fastcan.std(axis=0) / 3,color="tab:blue", label="FastCan"
+    )
     fig.legend(loc="upper left", bbox_to_anchor=(0.12, 0.88))
     ax1.set_ylabel("R2")
     ax1.set_xlabel("Number of Samples")
