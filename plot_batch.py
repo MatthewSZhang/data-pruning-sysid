@@ -9,7 +9,7 @@ from sklearn.metrics import r2_score
 from utils import fastcan_pruned_narx, get_dual_stable_equilibria_data, get_narx_terms
 
 
-def _plot_batch(u, y, batch_size_list, n_samples, figure_name):
+def _plot_batch(u, y, batch_size_list, n_samples, n_atoms, figure_name):
     poly_terms, y, narx = get_narx_terms(u, y)
 
     n_random = 10
@@ -19,7 +19,7 @@ def _plot_batch(u, y, batch_size_list, n_samples, figure_name):
         print(figure_name, "   ", f"Random test: {i+1}/{n_random}")
         for j, batch_size in enumerate(batch_size_list):
             coef, intercept = fastcan_pruned_narx(
-                poly_terms, y, n_samples, i, batch_size
+                poly_terms, y, n_samples, i, batch_size, n_atoms
             )
             r2_fastcan[i, j] = r2_score(
                 np.r_[coef, intercept], np.r_[narx.coef_, narx.intercept_]
@@ -43,8 +43,10 @@ def main(dataset) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(2, 6, 5, dtype=int),
+                # np.linspace(2, 6, 5, dtype=int),
+                np.linspace(2, 10, 5, dtype=int),
                 600,
+                60,
                 "batch_dsed.png",
             )
         case "emps":
@@ -53,8 +55,10 @@ def main(dataset) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(10, 100, 10, dtype=int),
+                # np.linspace(10, 100, 10, dtype=int),
+                np.linspace(1, 10, 10, dtype=int),
                 10000,
+                700,
                 "batch_emps.png",
             )
         case "whbm":
@@ -65,6 +69,7 @@ def main(dataset) -> None:
                 train_val_y,
                 np.linspace(10, 100, 10, dtype=int),
                 10000,
+                100,
                 "batch_whbm.png",
             )
         case _:
