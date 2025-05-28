@@ -6,8 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
-    "fastcan",
-    # "fastcan>=0.3.0",
+    "fastcan>=0.3.2",
     "matplotlib>=3.10.0",
     "nonlinear-benchmarks>=1.0.0",
 ]
@@ -57,6 +56,3 @@ ignore = [
     # Local variable ... is assigned to but never used
     "F841",
 ]
-
-[tool.uv.sources]
-fastcan = { git = "https://github.com/scikit-learn-contrib/fastcan.git" }
