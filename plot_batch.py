@@ -56,7 +56,7 @@ def main(dataset) -> None:
                 train_val_u,
                 train_val_y,
                 # np.linspace(10, 100, 10, dtype=int),
-                np.linspace(1, 10, 10, dtype=int),
+                np.linspace(1, 15, 8, dtype=int),
                 10000,
                 700,
                 "batch_emps.png",
