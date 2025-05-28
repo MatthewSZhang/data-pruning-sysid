@@ -50,7 +50,6 @@ def get_dual_stable_equilibria_data(auto=False, y0=None, dur=10, n_samples=100):
     else:
         n_init = len(y0)
 
-    n_samples = n_samples
     t = np.linspace(0, dur, n_samples)
     sol = np.zeros((n_init, n_samples, 2))
     u = np.zeros(0)
@@ -101,7 +100,14 @@ def get_narx_terms(u, y):
     return *_mask_missing_value(poly_terms, y), narx
 
 
-def fastcan_pruned_narx(terms, y, n_samples_to_select: int, random_state: int):
+def fastcan_pruned_narx(
+    terms,
+    y,
+    n_samples_to_select: int,
+    random_state: int,
+    batch_size=1000,
+    n_atoms=100,
+):
     """
     Fit a NARX model with data pruned by FastCan.
 
@@ -128,13 +134,15 @@ def fastcan_pruned_narx(terms, y, n_samples_to_select: int, random_state: int):
         Intercept of the linear regression.
     """
     kmeans = MiniBatchKMeans(
-        n_clusters=100,
+        n_clusters=n_atoms,
         random_state=random_state,
         batch_size=6,
         n_init="auto",
     ).fit(terms)
     atoms = kmeans.cluster_centers_
-    ids_fastcan = minibatch(terms.T, atoms.T, n_samples_to_select, batch_size=7)
+    ids_fastcan = minibatch(
+        terms.T, atoms.T, n_samples_to_select, batch_size=batch_size
+    )
     pruned_narx = LinearRegression().fit(terms[ids_fastcan], y[ids_fastcan])
     return pruned_narx.coef_, pruned_narx.intercept_
 

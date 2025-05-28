@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
-    "fastcan>=0.3.0",
+    "fastcan>=0.3.2",
     "matplotlib>=3.10.0",
     "nonlinear-benchmarks>=1.0.0",
 ]

@@ -25,7 +25,7 @@ if __name__ == "__main__":
     plt.imshow(Y_corr)
     cb = plt.colorbar()
     cb.ax.set_title("$r$")
-    ticks = np.arange(len(time_ids), step=5)
+    ticks = np.arange(0, len(time_ids), step=5)
     plt.xticks(ticks)
     plt.yticks(ticks)
     plt.xlabel("Feature Index")
