@@ -29,7 +29,7 @@ def _plot_sample(
     intercept=True,
     n_random=5,
 ):
-    poly_terms, y, narx = get_narx_terms(u, y)
+    poly_terms, y, narx = get_narx_terms(u, y, intercept)
     sample_step = int((n_sample_upper - n_sample_lower) / (n_sample_steps - 1))
     # atom_step = int((n_atom_upper - n_atom_lower) / (n_atom_steps - 1))
     n_atom_steps = len(atom_step)
