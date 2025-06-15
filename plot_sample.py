@@ -8,6 +8,8 @@ from rich.progress import Progress, TimeRemainingColumn
 
 from utils import (
     fastcan_pruned_narx,
+    get_dsed_eq,
+    get_dsed_tr,
     get_dual_stable_equilibria_data,
     get_narx_terms,
     get_r2,
@@ -96,17 +98,51 @@ def _plot_sample(
 
 
 @click.command()
-@click.option("--dataset", default="dsed", help="Choose dataset from: dsed, emps, whbm")
+@click.option("--dataset", default="dsed", help="Choose dataset from: dsed-eq, dsed-tr, dsed, emps, whbm")
 @click.option("--n_random", default=10, help="Set the number of random tests")
 def main(dataset, n_random) -> None:
     match dataset:
+        case "dsed-eq":
+            u, y = get_dsed_eq()
+            _plot_sample(
+                u,
+                y,
+                n_sample_lower=50,
+                n_sample_upper=150,
+                n_sample_steps=11,
+                # n_atom_lower=3,
+                # n_atom_upper=120,
+                # n_atom_steps=40,
+                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                figure_name="sample_dsed_eq.png",
+                n_random=n_random,
+                intercept=True,
+                max_delay=4,
+            )
+        case "dsed-tr":
+            u, y = get_dsed_tr()
+            _plot_sample(
+                u,
+                y,
+                n_sample_lower=50,
+                n_sample_upper=250,
+                n_sample_steps=11,
+                # n_atom_lower=3,
+                # n_atom_upper=120,
+                # n_atom_steps=40,
+                atom_step=[2, 5, 10, 15, 20, 30, 50, 70],
+                figure_name="sample_dsed_tr.png",
+                n_random=n_random,
+                intercept=True,
+                max_delay=6,
+            )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_sample(
                 train_val_u,
                 train_val_y,
                 n_sample_lower=50,
-                n_sample_upper=150,
+                n_sample_upper=250,
                 n_sample_steps=11,
                 # n_atom_lower=3,
                 # n_atom_upper=120,
@@ -115,7 +151,7 @@ def main(dataset, n_random) -> None:
                 figure_name="sample_dsed.png",
                 n_random=n_random,
                 intercept=True,
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -134,7 +170,7 @@ def main(dataset, n_random) -> None:
                 figure_name="sample_emps.png",
                 n_random=n_random,
                 intercept=False,
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -152,7 +188,7 @@ def main(dataset, n_random) -> None:
                 figure_name="sample_whbm.png",
                 n_random=n_random,
                 intercept=True,
-                max_delay=10,
+                max_delay=7,
             )
         case _:
             raise NameError(

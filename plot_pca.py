@@ -29,7 +29,7 @@ def _plot_pca(
     split_point=None,
     split_labels=None,
 ):
-    poly_terms, y, _ = get_narx_terms(u, y, intercept, max_delay)
+    poly_terms, y, narx = get_narx_terms(u, y, intercept, max_delay)
     pca = PCA(2).fit(poly_terms)
     pcs_all = pca.transform(poly_terms)
 
@@ -53,16 +53,25 @@ def _plot_pca(
 
     if split_labels is None:
         split_labels = ["All data"]
+        
+    if isinstance(split_point, str):
+        if split_point == "dsed-eq":
+            mask = np.arange((100 - narx.max_delay_) * 100) < (100 - narx.max_delay_) * 98
 
-    if split_point is None:
-        plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=50)
+        elif split_point == "dsed-tr":
+            mask = np.arange((1000 - narx.max_delay_) * 2)
+            mask = (mask < 100) | (
+                (mask > (1000 - narx.max_delay_)) & (mask < (1000 - narx.max_delay_) + 100)
+            )
+        plt.scatter(
+            pcs_all[mask, 0], pcs_all[mask, 1], s=50, c="tab:blue"
+        )
+        plt.scatter(
+            pcs_all[~mask, 0], pcs_all[~mask, 1], s=50, c="tab:purple"
+        )
     else:
-        plt.scatter(
-            pcs_all[split_point, 0], pcs_all[split_point, 1], s=50, c="tab:blue"
-        )
-        plt.scatter(
-            pcs_all[~split_point, 0], pcs_all[~split_point, 1], s=50, c="tab:purple"
-        )
+        plt.scatter(pcs_all[:, 0], pcs_all[:, 1], s=50)
+        
     plt.scatter(
         pcs_fastcan[:, 0], pcs_fastcan[:, 1], s=5, marker="o", alpha=0.9, c="tab:orange"
     )
@@ -91,8 +100,6 @@ def main(dataset, random_state) -> None:
     match dataset:
         case "dsed-eq":
             u, y = get_dsed_eq()
-            max_delay = 3
-            mask = np.arange((100 - max_delay) * 100) < (100 - max_delay) * 98
             _plot_pca(
                 u,
                 y,
@@ -101,27 +108,22 @@ def main(dataset, random_state) -> None:
                 100,
                 "pca_dsed_eq.png",
                 random_state,
-                max_delay=max_delay,
-                split_point=mask,
+                max_delay=4,
+                split_point=dataset,
                 split_labels=["Right equil.", "Left equil."],
             )
         case "dsed-tr":
             u, y = get_dsed_tr()
-            max_delay = 3
-            mask = np.arange((1000 - max_delay) * 2)
-            mask = (mask < 100) | (
-                (mask > (1000 - max_delay)) & (mask < (1000 - max_delay) + 100)
-            )
             _plot_pca(
                 u,
                 y,
-                10,
+                20,
                 1000000,
                 100,
                 "pca_dsed_tr.png",
                 random_state,
-                max_delay=max_delay,
-                split_point=mask,
+                max_delay=6,
+                split_point=dataset,
                 split_labels=["TS", "SS"],
             )
         case "dsed":
@@ -129,12 +131,12 @@ def main(dataset, random_state) -> None:
             _plot_pca(
                 train_val_u,
                 train_val_y,
-                20,
+                15,
                 1000000,
                 100,
                 "pca_dsed.png",
                 random_state,
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -142,12 +144,12 @@ def main(dataset, random_state) -> None:
             _plot_pca(
                 train_val_u,
                 train_val_y,
-                5,
+                10,
                 1000000,
                 100,
                 "pca_emps.png",
                 random_state,
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
@@ -160,7 +162,7 @@ def main(dataset, random_state) -> None:
                 100,
                 "pca_whbm.png",
                 random_state,
-                max_delay=10,
+                max_delay=7,
             )
         case _:
             raise NameError(

@@ -113,28 +113,28 @@ def main(dataset, n_random) -> None:
             _plot_errorbar(
                 u,
                 y,
-                40,
-                130,
-                10,
+                50,
+                150,
+                11,
                 20,
                 False,
                 "errorbar_dsed_eq.png",
-                n_random=10,
-                max_delay=3,
+                n_random=n_random,
+                max_delay=4,
             )
         case "dsed-tr":
             u, y = get_dsed_tr()
             _plot_errorbar(
                 u,
                 y,
-                20,
-                110,
-                10,
+                50,
+                150,
+                11,
                 20,
                 False,
                 "errorbar_dsed_tr.png",
-                n_random=10,
-                max_delay=3,
+                n_random=n_random,
+                max_delay=6,
             )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
@@ -144,11 +144,11 @@ def main(dataset, n_random) -> None:
                 50,
                 150,
                 11,
-                20,
+                15,
                 False,
                 "errorbar_dsed.png",
                 n_random=n_random,
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -160,12 +160,12 @@ def main(dataset, n_random) -> None:
                 20,
                 120,
                 11,
-                5,  # No atoms for EMPS dataset
+                10,  # No atoms for EMPS dataset
                 False,
                 "errorbar_emps.png",
                 # intercept=True,
                 n_random=n_random,
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

@@ -69,21 +69,21 @@ def main(dataset, n_random) -> None:
     match dataset:
         case "dsed-eq":
             u, y = get_dsed_eq()
-            _plot_box(u, y, 100, 20, False, "box_dsed_eq.png", n_random=10, max_delay=3)
+            _plot_box(u, y, 100, 20, False, "box_dsed_eq.png", n_random=10, max_delay=4)
         case "dsed-tr":
             u, y = get_dsed_tr()
-            _plot_box(u, y, 110, 10, False, "box_dsed_tr.png", n_random=10, max_delay=3)
+            _plot_box(u, y, 100, 20, False, "box_dsed_tr.png", n_random=10, max_delay=6)
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
             _plot_box(
                 train_val_u,
                 train_val_y,
                 100,
-                20,
+                15,
                 False,
                 "box_dsed.png",
                 n_random=n_random,
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -93,11 +93,11 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 100,
-                5,
+                10,
                 False,
                 "box_emps.png",
                 n_random=n_random,
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

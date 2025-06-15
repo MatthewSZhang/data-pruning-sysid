@@ -66,24 +66,25 @@ def main(dataset, n_random) -> None:
             _plot_atom(
                 u,
                 y,
-                [3, 5, 10, 15, 20, 25, 30, 50],
+                # [3, 5, 10, 15, 20, 25, 30, 50],
+                [2, 5, 10, 15, 20, 30, 50, 70],
                 100,
-                10,
-                "atom_dsed_eq.png",
+                n_random=n_random,
+                figure_name= "atom_dsed_eq.png",
                 intercept=True,
-                max_delay=3,
+                max_delay=4,
             )
         case "dsed-tr":
             u, y = get_dsed_tr()
             _plot_atom(
                 u,
                 y,
-                [3, 5, 10, 15, 20, 25, 30, 50],
+                [2, 5, 10, 15, 20, 30, 50, 70],
                 100,
-                10,
-                "atom_dsed_tr.png",
+                n_random=n_random,
+                figure_name="atom_dsed_tr.png",
                 intercept=True,
-                max_delay=3,
+                max_delay=6,
             )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
@@ -94,7 +95,7 @@ def main(dataset, n_random) -> None:
                 100,
                 n_random=n_random,
                 figure_name="atom_dsed.png",
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -107,7 +108,7 @@ def main(dataset, n_random) -> None:
                 n_random=n_random,
                 figure_name="atom_emps.png",
                 # intercept=False,  # No intercept for EMPS dataset
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()

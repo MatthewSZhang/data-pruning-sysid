@@ -69,24 +69,24 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 u,
                 y,
-                [1, 2, 3, 4, 5],
+                np.linspace(1, 5, 5, dtype=int),
                 100,
                 20,
                 n_random=n_random,
                 figure_name="batch_dsed_eq.png",
-                max_delay=3,
+                max_delay=4,
             )
         case "dsed-tr":
             u, y = get_dsed_tr()
             _plot_batch(
                 u,
                 y,
-                [2, 4, 6, 8, 10],
+                np.linspace(1, 5, 5, dtype=int),
                 100,
-                10,
+                20,
                 n_random=n_random,
                 figure_name="batch_dsed_tr.png",
-                max_delay=3,
+                max_delay=6,
             )
         case "dsed":
             train_val_u, train_val_y, _ = get_dual_stable_equilibria_data()
@@ -94,12 +94,12 @@ def main(dataset, n_random) -> None:
                 train_val_u,
                 train_val_y,
                 # np.linspace(2, 6, 5, dtype=int),
-                np.linspace(1, 5, 5, dtype=int),
+                np.linspace(1, 7, 7, dtype=int),
                 100,
-                20,
+                15,
                 n_random=n_random,
                 figure_name="batch_dsed.png",
-                max_delay=3,
+                max_delay=4,
             )
         case "emps":
             train_val, _ = nonlinear_benchmarks.EMPS()
@@ -107,22 +107,22 @@ def main(dataset, n_random) -> None:
             _plot_batch(
                 train_val_u,
                 train_val_y,
-                np.linspace(2, 20, 10, dtype=int),
+                np.linspace(1, 10, 10, dtype=int),
                 100,
-                5,
+                10,
                 # np.linspace(5, 50, 10, dtype=int),
                 # 100,
                 # 2,
-                # np.linspace(1, 10, 10, dtype=int),
+                # np.linspace(1, 20, 10, dtype=int),
                 # 100,
-                # 10,
+                # 5,
                 # np.linspace(1, 5, 5, dtype=int),
                 # 100,
                 # 20,
                 n_random=n_random,
                 figure_name="batch_emps.png",
                 # intercept=False,  # No intercept for EMPS dataset
-                max_delay=6,
+                max_delay=4,
             )
         case "whbm":
             train_val, _ = nonlinear_benchmarks.WienerHammerBenchMark()
