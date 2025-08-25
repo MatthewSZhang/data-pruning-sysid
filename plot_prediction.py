@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import nonlinear_benchmarks
 from fastcan.narx import make_narx
 from sklearn.metrics import r2_score
+import matplotlib.ticker as mticker
 
 from utils import get_dsed_eq, get_dsed_tr, get_dual_stable_equilibria_data
 
@@ -48,6 +49,12 @@ def _plot_prediction(
         f"NARX prediction results (R-squared: {
             r2_score(y[:plot_n_samples], y_hat[:plot_n_samples]):.5f})",
         fontsize=fonts,
+    )
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(
+        mticker.FuncFormatter(
+            lambda x, p: format(int(x), ',') if abs(int(x)) >= 10000 else str(int(x))
+        )
     )
     plt.savefig(figure_name, bbox_inches="tight")
     plt.close()
